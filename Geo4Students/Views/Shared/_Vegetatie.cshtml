@@ -1,0 +1,9 @@
+﻿@model Geo4Students.ViewModels.VegetatieViewModel
+
+@{
+    var vegetatie = "../../Assets/Images/Vegetatietypes/" + Model.DeterminatieResultaat.VegetatieKenmerk.ToLower().Replace(" ", string.Empty) + ".jpg";
+}
+
+<div class="col-md-12">
+    <img src="@vegetatie" id="vegetatieImage" class="img-responsive" alt="Foto van het vegetatietype"/>
+</div>

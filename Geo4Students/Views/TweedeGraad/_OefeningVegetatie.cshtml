@@ -1,0 +1,33 @@
+﻿@using Geo4Students.ViewModels
+@model OefeningDeterminatieViewModel
+
+<div class="mainContent col-md-12" id="vegetatie">
+    <div class="text-center">
+        <div class="col-md-8 col-md-offset-2">
+            <h2>Vegetatietype</h2>
+            <div class="col-md-8 col-md-offset-2">
+                <hr/>
+            </div>
+            <div class="col-md-12">
+                @if (Model.Jaar == 3)
+                {
+                    @Html.Partial("_VegetatieSelectieDerdeJaar", new VegetatieViewModel
+                    {
+                        DeterminatieResultaat = Model.JuisteResultaat(),
+                        Resultaten = Model.DeterminatieViewModel.GeefResultaten().Select(e => e).ToList()
+                    })
+                    ;
+                }
+                else
+                {
+                    @Html.Partial("_VegetatieSelectieVierdeJaar", new VegetatieViewModel
+                    {
+                        DeterminatieResultaat = Model.JuisteResultaat(),
+                        Resultaten = Model.DeterminatieViewModel.GeefResultaten().Select(e => e).ToList()
+                    })
+                    ;
+                }
+            </div>
+        </div>
+    </div>
+</div>

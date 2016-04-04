@@ -1,0 +1,63 @@
+﻿@model Geo4Students.ViewModels.VegetatieViewModel
+
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        @Html.Partial("_Vegetatie", Model)
+    </div>
+</div>
+<br/>
+<div class="alert-danger" id="message"></div>
+<br/>
+<div class="row">
+    <div class="col-md-8 col-md-offset-2 text-center">
+        @using (Html.BeginForm(null, null, FormMethod.Post, new {id = "vegetatieForm"}))
+        {
+            <div class="form-group">
+                <select id="vegetatieKenmerken">
+                    <option value="null">Selecteer vegetatiekenmerk</option>
+                    @foreach (var resultaat in Model.Resultaten)
+                    {
+                        <option value="@resultaat.VegetatieKenmerk">@resultaat.VegetatieKenmerk</option>
+                    }
+                </select>
+            </div>
+            <div id="message" class="alert col-md-8 col-md-offset-2"></div>
+            <div class="form-group col-md-8 col-md-offset-2">
+                <input type="submit" value="Bevestig" id="vegetatieSubmit"/>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $("#message").hide();
+        $("#vegetatieForm").submit(function(e) {
+            var juist = "@Model.DeterminatieResultaat.VegetatieKenmerk";
+            if ($("#vegetatieKenmerken").val() === juist) {
+
+                $.ajax({
+                    url: 'ShowGoedeAntwoord',
+                    contentType: 'application/html; charset=utf-8',
+                    type: 'GET',
+                    data: { klimatogramId: globalKlimatogramId },
+                    dataType: 'html'
+                }).success(function(result) {
+                    $('#goedeAntwoord').html(result);
+                });
+                //$("#proficiat").show();
+
+                $("#vegetatieKenmerken").prop("disabled", true);
+                $("#message").hide();
+                $("#vegetatieSubmit").hide();
+                slideUpCustom($(".toggleButton"));
+                return false;
+            }
+            if ($("#vegetatieKenmerken").val() !== juist) {
+                $("#message").show();
+                $("#message").html("Woeps, niet juist. Probeer nog een keer.");
+                return false;
+            }
+        });
+    });
+</script>

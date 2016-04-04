@@ -1,0 +1,88 @@
+﻿.map-marker {
+    /* adjusting for the marker dimensions 
+    so that it is centered on coordinates */
+    margin-left: -8px;
+    margin-top: -8px;
+    z-index: 20000;
+}
+
+.map-marker.map-clickable { cursor: pointer; }
+
+.pulse {
+    -moz-border-radius: 30px;
+    -webkit-border-radius: 30px;
+    background-color: #716f42;
+    border: 5px solid yellow;
+    border-radius: 30px;
+    height: 10px;
+    position: absolute;
+    width: 10px;
+    z-index: 20000;
+}
+
+.map-marker .dot {
+    -moz-animation: pulse 3s ease-out;
+    -moz-animation-iteration-count: infinite;
+    -moz-border-radius: 60px;
+    -webkit-animation: pulse 3s ease-out;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-border-radius: 60px;
+    animation: pulse 3s ease-out;
+    animation-iteration-count: infinite;
+    background: transparent;
+    border: 10px solid yellow;
+    border-radius: 60px;
+    height: 50px;
+    left: -20px;
+    opacity: 0;
+    position: absolute;
+    top: -20px;
+    width: 50px;
+    z-index: 20000;
+}
+
+@-webkit-keyframes pulse {
+    0% {
+        -webkit-transform: scale(0);
+        opacity: 0.0;
+    }
+
+    25% {
+        -webkit-transform: scale(0);
+        opacity: 0.1;
+    }
+
+    50% {
+        -webkit-transform: scale(0.1);
+        opacity: 0.3;
+    }
+
+    75% {
+        -webkit-transform: scale(0.5);
+        opacity: 0.5;
+    }
+
+    100% {
+        -webkit-transform: scale(1);
+        opacity: 0.0;
+    }
+}
+
+.v-center { display: table !important; }
+
+.v-center div[class*='col-'] {
+    display: table-cell !important;
+    float: none;
+    vertical-align: middle;
+}
+
+div.fadeMe {
+    background: #000;
+    height: 100%;
+    left: 0;
+    opacity: 0.5;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+}

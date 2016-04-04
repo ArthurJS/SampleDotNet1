@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geo4Students", "Geo4Students\Geo4Students.csproj", "{D8B1AE80-8061-4B3D-A2D8-FF13AD31B890}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geo4Students.Tests", "Geo4Students.Tests\Geo4Students.Tests.csproj", "{59F417A6-E929-498A-88EF-F3DC6C00CF69}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D8B1AE80-8061-4B3D-A2D8-FF13AD31B890}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8B1AE80-8061-4B3D-A2D8-FF13AD31B890}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8B1AE80-8061-4B3D-A2D8-FF13AD31B890}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8B1AE80-8061-4B3D-A2D8-FF13AD31B890}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59F417A6-E929-498A-88EF-F3DC6C00CF69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59F417A6-E929-498A-88EF-F3DC6C00CF69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59F417A6-E929-498A-88EF-F3DC6C00CF69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59F417A6-E929-498A-88EF-F3DC6C00CF69}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,77 @@
+﻿@model Geo4Students.ViewModels.KlimatogramViewModel
+
+<div class="col-md-8 col-md-offset-2">
+    <div id=@("map" + Model.Klimatogram.KlimatogramId) style="height: 600px; width: 100%;"></div>
+</div>
+
+<script type="text/javascript">
+    var map = AmCharts.makeChart('@("map" + Model.Klimatogram.KlimatogramId)', {
+        type: "map",
+        mouseWheelZoomEnabled: false,
+        imagesSettings: {
+            labelColor: "#333",
+            labelRollOverColor: "#AAA",
+            labelFontSize: 11,
+            rollOverScale: 1,
+            selectedScale: 1,
+            color: "rgba(0,0,0,1.0)"
+        },
+        dragMap: false,
+        zoomOnDoubleClick: false,
+        zoomControl: {
+            panControlEnabled: false,
+            zoomControlEnabled: false
+        },
+        areasSettings: {
+            unlistedAreasColor: "rgba(0, 0, 0, 0.4)"
+        },
+
+        dataProvider: {
+            map: "worldLow",
+            images: [{ latitude: '@Model.Klimatogram.X'.replace(",", "."), longitude: '@Model.Klimatogram.Y'.replace(",", "."), type: 'bubble', zoomLevel: 0, scale: 0.1, title: '@Model.Klimatogram.Naam' }],
+        }
+    });
+
+    map.addListener("positionChanged", updateCustomMarkers);
+
+    function updateCustomMarkers() {
+        var p = map;
+
+        for (var x in p.dataProvider.images) {
+            var image = p.dataProvider.images[x];
+            if ('undefined' == typeof image.externalElement) {
+                image.externalElement = createCustomMarker(image);
+            }
+            image.externalElement.style.top = p.latitudeToY(image.latitude) + 'px';
+            image.externalElement.style.left = p.longitudeToX(image.longitude) + 'px';
+        }
+        $("tspan").attr("x", "-10").attr("y", "0");
+    }
+
+    function createCustomMarker(image) {
+        var holder = document.createElement('div');
+        holder.className = 'map-marker';
+        holder.title = image.title;
+        holder.id = 'dot';
+        holder.style.position = 'absolute';
+
+        holder.onclick = function(i) {
+        };
+        if (undefined != image.url) {
+            holder.onclick = function() {
+                window.location.href = image.url;
+            };
+            holder.className += ' map-clickable';
+        }
+        var pulse = document.createElement('div');
+        pulse.className = 'pulse';
+        pulse.id = holder.id;
+        holder.appendChild(pulse);
+
+        image.chart.chartDiv.appendChild(holder);
+
+        return holder;
+    }
+
+    updateCustomMarkers();
+</script>

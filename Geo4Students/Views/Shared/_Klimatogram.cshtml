@@ -1,0 +1,11 @@
+﻿@model Geo4Students.ViewModels.KlimatogramViewModel
+
+@if (Model.Klimatogram != null)
+{
+    @Model.CreateChart()
+    <p class="text-center">Gemiddelde temperatuur: @Model.Klimatogram.GemiddeldeTemp() °C en totale jaarneerslag: @Model.Klimatogram.TotaleNeerslag() mmN</p>
+}
+else
+{
+    <p class="text-info">Er zijn geen klimatogrammen beschikbaar voor het gekozen land.</p>
+}

@@ -1,0 +1,74 @@
+﻿@model Geo4Students.ViewModels.OefeningDeterminatieViewModel
+
+@{
+    ViewBag.Title = "Oef Graad 2";
+}
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+
+<script type="text/javascript" src="/Scripts/ammap/ammap.js"></script>
+<script type="text/javascript" src="/Scripts/ammap/worldLow.js"></script>
+
+<link href="@Url.Content("/Scripts/Style/Map.css")" rel="stylesheet" type="text/css"/>
+
+<div class="mainContent col-md-12">
+    <h2 align="center" class="styledTitle">
+        Oefening <b>2<sup>de</sup></b> Graad
+    </h2>
+    <div class="col-md-8 col-md-offset-2">
+        <hr/>
+    </div>
+    <div class="col-md-12">
+        <p>
+            <i class="fa fa-sitemap fa-4x yellowIcon pull-left"></i>
+            <b>Opdracht:</b> Kies eerst een locatie waarvoor je het klimaat- en vegetatietype wilt bepalen. Doorloop hierna de <b>determinatietabel</b>
+            en klik dan op het vakje waarin het juiste klimaattype staat. Gebruik hiervoor het <b>klimatogram</b>. Klik dan op de "controleer" knop om te kijken
+            of je antwoord juist is. Indien het niet juist is krijg je te zien waar je fout bent gegaan: een groen vakje ligt op de goede weg maar een
+            rood vakje niet. Als je het goede klimaattype hebt bepaald moet je uit een lijst van <b>vegetatietypes</b> het juiste kiezen. Indien je in het 3<sup>de</sup>
+            jaar zit krijg je nog een foto te zien als hulp.
+        </p>
+    </div>
+</div>
+
+<div class="mainContent col-md-12">
+    <h2 class="text-center">Klimatogram</h2>
+    <div class="content">
+        <div id="klimatogramChart" class="col-md-12">
+            <div class="col-md-8 col-md-offset-2">
+                <hr/>
+            </div>
+            <div class="col-md-12">
+                @Html.Partial("../Klimatogram/_OpvragenKlimatogram", Model.KlimatogramViewModel)
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var globalKlimatogramId;
+    var graadOefening = 2;
+
+    function onShowKlimatogram() {
+        var klimatogramId = $("#KlimatogramChart").children("div").attr("id").split('_')[1];
+        globalKlimatogramId = klimatogramId;
+
+        $("#klimatogramDropDowns").hide();
+
+        $.ajax({
+            url: 'ShowOefeningTabel',
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            data: { klimatogramId: klimatogramId },
+            dataType: 'html'
+        }).success(function(result) {
+            $('#oefeningTabel').html(result);
+        });
+
+    }
+</script>
+
+<div id="oefeningTabel"></div>
+
+<div id="oefeningVegetatie"></div>
+
+<div id="goedeAntwoord"></div>

@@ -1,0 +1,22 @@
+﻿@model Geo4Students.ViewModels.KlimatogramViewModel
+@if (Model.Klimatogrammen != null)
+{
+    if (Model.Klimatogrammen.Count() > 0)
+    {
+        using (Ajax.BeginForm("SelectKlimatogram", "Klimatogram", new AjaxOptions {HttpMethod = "GET", OnSuccess = "onShowKlimatogram", InsertionMode = InsertionMode.Replace, UpdateTargetId = "KlimatogramChart"}))
+        {
+            @Html.Label("Stap 3: Kies een klimatogram om weer te geven")
+            @Html.DropDownListFor(m => m.SelectedKlimatogramId, Model.Klimatogrammen, "<kies een klimatogram>", new {@class = "form-control"})
+        }
+    }
+    else
+    {
+        <p class="text-info">Er zijn geen klimatogrammen beschikbaar voor het gekozen land.</p>
+    }
+}
+
+<script type="text/javascript">
+    $("#SelectedKlimatogramId").change(function() {
+        $(this).parents("form").submit();
+    });
+</script>

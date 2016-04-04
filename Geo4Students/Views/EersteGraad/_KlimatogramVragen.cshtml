@@ -1,0 +1,119 @@
+﻿@model Geo4Students.ViewModels.VragenViewModel
+
+
+<div class="mainContent col-md-12">
+    <h2 class="text-center">Vragen</h2>
+    <div class="col-md-8 col-md-offset-2">
+        <hr/>
+    </div>
+    <form class="form-horizontal">
+        @for (var i = 0; i < Model.Parameters.Count(); ++i)
+        {
+            <div class="form-group row">
+                <div id=@("form_" + i)>
+                    <div class="col-md-6 text-right">
+                        <p>
+                            @Html.Label(Model.Parameters[i].Omschrijving, new {@class = "text-right"})
+                        </p>
+                    </div>
+                    <div class="col-md-6 text-left row">
+                        <div class="col-md-6">
+                            <select id=@("sel" + i) class="form-control">
+
+                                <option value="-1">&lt;kies een antwoord&gt;</option>
+
+                                @for (var j = 0; j < @Model.Parameters[i].MogelijkeAntwoorden.Count(); ++j)
+                                {
+                                    <option value=@(j + "")>@Model.Parameters[i].MogelijkeAntwoorden[j]</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="iconContainer col-md-2" style="display: inline-flex"></div>
+                    </div>
+                </div>
+            </div>
+        }
+    </form>
+    <br/>
+    <div class="form-group">
+        <div class="col-md-2 col-md-offset-5 text-center">
+            <input id="btnControleer" type="submit" value="Controleer" class="btn btn-default"/>
+        </div>
+    </div>
+
+    <div class="col-md-12 text-center">
+        <h4 class="text-success successMsg"></h4>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnControleer").click(function (e) {
+            var deJuisteAntwoorden = new Array();
+
+            @for (var i = 0; i < Model.Parameters.Count(); ++i)
+            {
+                @:var temp = new Array();
+                for(var e = 0; e < Model.Parameters[i].JuisteAntwoord.Count; e++)
+                {
+                    @:temp.push('@Model.Parameters[i].JuisteAntwoord.ElementAt(e)');
+                }
+                @:deJuisteAntwoorden.push(temp);
+                                                }
+            //console.log(deJuisteAntwoorden.forEach());
+
+            var mijnAntwoorden = new Array();
+
+            @for (var i = 0; i < Model.Parameters.Count(); ++i)
+            {
+                @:var selected = $("#sel" + @i + " option:selected");
+                                                    @:mijnAntwoorden.push(selected.text());
+                                                }
+
+            var aantalJuist = 0;
+            var totaalAantal = '@Model.Parameters.Count()';
+
+            for (var i = 0; i < totaalAantal; ++i) {
+                var juist = false;
+                var antwoorden = deJuisteAntwoorden[i];
+                for (var y = 0; y < antwoorden.length; ++y) {
+                    if (mijnAntwoorden[i] === antwoorden[y]) {
+                        juist = true;
+                    }
+                }
+                if (juist) {
+                    if (!$("#form_" + i).hasClass("has-success")) {
+                        $("#form_" + i + " .iconContainer").html("<i class='fa fa-2x fa-check greenIcon'>");
+                    }
+                    $("#form_" + i).removeClass("has-error");
+                    $("#form_" + i).addClass("has-success");
+                    $("#sel" + i).attr("disabled", "true");
+                    aantalJuist++;
+                } else {
+                    if (mijnAntwoorden[i] !== "<kies een antwoord>") {
+                        if (!$("#form_" + i).hasClass("has-error")) {
+                            $("#form_" + i + " .iconContainer").html("<i class='fa fa-2x fa-close redIcon'>");
+                        }
+                        $("#form_" + i).addClass("has-error");
+                    }
+                }
+            }
+
+            if (aantalJuist == totaalAantal) {
+                $(".successMsg").text("Alle vragen zijn correct beantwoord.");
+
+                $.ajax({
+                    url: '../TweedeGraad/ShowOefeningTabel',
+                    contentType: 'application/html; charset=utf-8',
+                    type: 'GET',
+                    data: { klimatogramId: globalKlimatogramId },
+                    dataType: 'html'
+                }).success(function (result) {
+                    $('#oefeningTabelGraad1').html(result);
+                });
+            } else {
+                $(".successMsg").text("");
+            }
+        });
+    });
+</script>

@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="urn:schemas-microsoft-com:asm.v1" />
+  <xs:element name="configuration">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="configSections">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="section">
+                <xs:complexType>
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                  <xs:attribute name="type" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="appSettings">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="add">
+                <xs:complexType>
+                  <xs:attribute name="key" type="xs:string" use="required" />
+                  <xs:attribute name="value" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="system.web">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="compilation">
+                <xs:complexType>
+                  <xs:attribute name="debug" type="xs:boolean" use="required" />
+                  <xs:attribute name="targetFramework" type="xs:decimal" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="httpRuntime">
+                <xs:complexType>
+                  <xs:attribute name="targetFramework" type="xs:decimal" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="runtime">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element xmlns:q1="urn:schemas-microsoft-com:asm.v1" ref="q1:assemblyBinding" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="persistence-unit">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="provider" type="xs:string" />
+              <xs:element maxOccurs="unbounded" name="class" type="xs:string" />
+              <xs:element name="properties">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="property">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute name="name" type="xs:string" use="required" />
+                            <xs:attribute name="value" type="xs:string" use="optional" />
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" use="required" />
+            <xs:attribute name="transaction-type" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

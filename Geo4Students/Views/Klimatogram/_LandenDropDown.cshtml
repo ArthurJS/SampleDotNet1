@@ -1,0 +1,15 @@
+﻿@model Geo4Students.ViewModels.KlimatogramViewModel
+@if (Model.Landen != null && Model.Landen.Count() > 0)
+{
+    using (Ajax.BeginForm("SelectLand", "Klimatogram", new AjaxOptions {HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "KlimatogrammenDropDown"}))
+    {
+        @Html.Label("Stap 2: Kies een land")
+        @Html.DropDownListFor(m => m.SelectedLandId, Model.Landen, "<kies een land>", new {@class = "form-control"})
+    }
+}
+
+<script type="text/javascript">
+    $("#SelectedLandId").change(function() {
+        $(this).parents("form").submit();
+    });
+</script>

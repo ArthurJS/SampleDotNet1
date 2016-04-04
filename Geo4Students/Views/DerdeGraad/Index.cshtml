@@ -1,0 +1,427 @@
+﻿@using Geo4Students.ViewModels
+@model DerdeGraadViewModel
+
+@{
+    ViewBag.Title = "Oef Graad 3";
+}
+
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+
+<script type="text/javascript" src="/Scripts/ammap/ammap.js"></script>
+<script type="text/javascript" src="/Scripts/ammap/worldLow.js"></script>
+
+
+<script type="text/javascript" src="/Scripts/jqSimpleConnect-1.0.js"></script>
+
+<script type="text/javascript" src="/Scripts/slideMainContentDivOnClick.js"></script>
+
+<link href="@Url.Content("/Scripts/Style/Map.css")" rel="stylesheet" type="text/css"/>
+
+
+<div class="mainContent col-md-12">
+    <h2 align="center" class="styledTitle">
+        Oefening <b>3<sup>de</sup></b> Graad
+    </h2>
+    <div class="col-md-8 col-md-offset-2">
+        <hr/>
+    </div>
+    <div class="col-md-12">
+        <p>
+            <i class="fa fa-globe fa-4x purpleIcon pull-left"></i>
+            <b>Opdracht</b>: Hieronder zie je een wereldkaart met daarop aangeduid <b>zes locaties</b>. Het is de bedoeling dat je elke locatie koppelt aan een
+            <b>klimatogram</b>. Klik op <i class="glyphicon glyphicon-triangle-right"></i> om een klimatogram weer te geven. Vervolgens kan je op een punt op
+            de kaart klikken om het gekozen klimatogram te verbinden met de gekozen locatie. Als je denkt dat je alles goed hebt verbonden, kan je klikken
+            op de knop "controleer" om te kijken of je juist bent. Maar het is nog niet gedaan, nu is het tijd voor de <b>vegetatietypes</b>. Vul voor elke locatie het
+            vakje in met het juiste vegetatietype. Om je helpen kan je gebruik maken van een <b>determinatietabel</b> door te klikken op
+            <i class="glyphicon glyphicon-question-sign opdracht"></i>.
+        </p>
+    </div>
+</div>
+
+<div class="mainContent col-md-12">
+    <div class="row v-center">
+        <div class="col-md-2" style="margin-left: 20px;">
+            @for (var i = 0; i < 3; ++i)
+            {
+                <div class="row" style="display: flex; justify-content: flex-end">
+                    <b style="font-size: 20px;">@(i + 1)</b>
+                    <i id=@("kl" + i) class="glyphicon glyphicon-triangle-right pull-right glow" style="font-size: 28px; z-index: 20000;"></i>
+                </div>
+                <div class="inputHidden" style="display: none;">
+                    <div class="row" style="display: flex; justify-content: flex-end;">
+                        <i id="vraagTabel" class="glyphicon glyphicon-question-sign glow" style="font-size: 16px; margin-left: 20px;"></i>
+                        <input id=@("veg" + i) type="text" class="form-control" style="margin: 8px 5px 0px 0px;" placeholder="vegetatietype"/>
+                    </div>
+                </div>
+                <div class="fotoHidden" style="display: none;">
+                    <div class="row foto" id=@("foto" + i) style="padding: 5px 5px 5px 30px;">
+                        @Html.Partial("_Vegetatie", new VegetatieViewModel {DeterminatieResultaat = @Model.Determinatietabel.Determineer(Model.KlimatogramVm[i].Klimatogram)})
+                    </div>
+                </div>
+
+
+                <br/>
+
+                if (i < 2)
+                {
+                    <div class="leegruimte">
+                        <br/><br/><br/><br/>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="col-md-8">
+            <div id="mapdiv" style="height: 600px; width: 100%;"></div>
+        </div>
+
+        <div class="col-md-2">
+            @for (var i = 3; i < 6; ++i)
+            {
+                <div class="row" style="display: flex;">
+                    <i id=@("kl" + i) class="glyphicon glyphicon-triangle-left pull-left glow" style="font-size: 28px; z-index: 20000;"></i>
+                    <b style="font-size: 20px;">@(i + 1)</b>
+                </div>
+                <div class="inputHidden" style="display: none;">
+                    <div class="row" style="display: flex; justify-content: flex-end;">
+                        <input id=@("veg" + i) type="text" class="form-control" style="margin: 8px 0px 0px 5px;" placeholder="vegetatietype"/>
+                        <i id="vraagTabel" class="glyphicon glyphicon-question-sign glow" style="font-size: 16px; margin-right: 20px;"></i>
+                    </div>
+                </div>
+
+                <div class="fotoHidden" style="display: none;">
+                    <div class="row foto" id=@("foto" + i) style="padding: 5px 30px 5px 5px;">
+                        @Html.Partial("_Vegetatie", new VegetatieViewModel {DeterminatieResultaat = @Model.Determinatietabel.Determineer(Model.KlimatogramVm[i].Klimatogram)})
+                    </div>
+                </div>
+
+                <br/>
+
+                if (i < 5)
+                {
+                    <div class="leegruimte">
+                        <br/><br/><br/><br/>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <div id="messageDerdeGraad" class="alert col-md-8 col-md-offset-2 text-center" css="display:none"></div>
+    <div class="row" id="endButtons" style="display: none">
+        <div class="form-group">
+            <div class="col-md-12">
+                <div class="col-md-6">
+                    <button id="nogIs" class="btn">Nog een oefening maken</button>
+                </div>
+                <div class="col-md-6">
+                    <button id="start" class="btn">Terug naar de startpagina</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-2 col-md-offset-5 text-center">
+                <input id="btnValideer" type="submit" name="submit" value="Controleer" class="btn"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mainContent col-md-12 text-center">
+    <div class="col-md-12">
+        <h2>Klimatogram</h2>
+        <div class="content">
+            <div class="col-md-8 col-md-offset-2">
+                <hr/>
+            </div>
+            <div id="klimatogramChart"></div>
+        </div>
+        <br/>
+    </div>
+</div>
+
+<div class="mainContent col-md-12 text-center determinatieDiv">
+    <i class="toggleButton fa fa-caret-square-o-up fa-2x extremeHover orangeIcon"></i>
+    <div class="col-md-10 col-md-offset-1">
+        <h2>Determinatietabel</h2>
+        <div class="content">
+            <div class="col-md-8 col-md-offset-2">
+                <hr/>
+            </div>
+            <div id="determinatieTabel">
+                @Html.Partial("_DeterminatietabelMetVegetatie", new DeterminatieViewModel(Model.Determinatietabel));
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var selectedKlimatogram = 0;
+
+    var connections = new Array(-1, -1, -1, -1, -1, -1);
+
+    var dots = [];
+
+    @for (var i = 0; i < 6; ++i)
+    {
+        var k = Model.KlimatogramVm[i].Klimatogram;
+        @:dots.push({ latitude: '@k.X'.replace(",", "."), longitude: '@k.Y'.replace(",", "."), type: 'bubble', zoomLevel: 0, scale: 0.1, title: '@k.Naam' });
+    }
+
+
+    var map = AmCharts.makeChart("mapdiv", {
+        type: "map",
+        mouseWheelZoomEnabled: false,
+        imagesSettings: {
+            labelColor: "#333",
+            labelRollOverColor: "#AAA",
+            labelFontSize: 11,
+            rollOverScale: 1,
+            selectedScale: 1,
+            color: "rgba(0,0,0,0)"
+        },
+        dragMap: false,
+        zoomOnDoubleClick: false,
+        zoomControl: {
+            panControlEnabled: false,
+            zoomControlEnabled: false
+        },
+        areasSettings: {
+            unlistedAreasColor: "rgba(0, 0, 0, 0.4)"
+        },
+
+        dataProvider: {
+            map: "worldLow",
+            images: dots,
+        }
+    });
+    map.addListener("positionChanged", updateCustomMarkers);
+
+
+    function updateCustomMarkers(event) {
+        var map = event.chart;
+        for (var x in map.dataProvider.images) {
+            var image = map.dataProvider.images[x];
+            if ('undefined' == typeof image.externalElement) {
+                image.externalElement = createCustomMarker(image);
+            }
+            image.externalElement.style.top = map.latitudeToY(image.latitude) + 'px';
+            image.externalElement.style.left = map.longitudeToX(image.longitude) + 'px';
+        }
+        $("tspan").attr("x", "-10").attr("y", "0");
+        jqSimpleConnect.repaintAll();
+    }
+
+    var dotIdx = 0;
+
+    var colors = new Array("black", "black", "black");
+
+    function createCustomMarker(image) {
+        var holder = document.createElement('div');
+        holder.className = 'map-marker';
+        holder.title = image.title;
+        holder.id = 'dot' + dotIdx++;
+        holder.style.position = 'absolute';
+        //console.log(holder.id);
+        holder.onclick = function(i) {
+            var dotId = this.id.substr(3, 4);
+
+            connect(selectedKlimatogram, dotId);
+
+            redraw();
+
+            $("radialgradient").remove();
+        };
+        if (undefined != image.url) {
+            holder.onclick = function() {
+                window.location.href = image.url;
+            };
+            holder.className += ' map-clickable';
+        }
+        var pulse = document.createElement('div');
+        pulse.className = 'pulse';
+        pulse.id = holder.id;
+        holder.appendChild(pulse);
+
+        image.chart.chartDiv.appendChild(holder);
+
+        return holder;
+    }
+
+    $('.glyphicon').css("color", "black");
+    $('.form-control').hide();
+    $(".foto").hide();
+    $(".determinatieDiv").hide();
+    $('.glyphicon.glyphicon-question-sign').hide();
+    $('.opdracht').show();
+
+    $(document).ready(function () {
+
+        $("#nogIs").click(function (e) {
+            e.preventDefault();
+            location.href = '../DerdeGraad/Index';
+        });
+
+        $("#start").click(function (e) {
+            e.preventDefault();
+            location.href = '../Home/Start';
+        });
+
+        $('.glyphicon.glyphicon-question-sign').click(function(e) {
+            $(".determinatieDiv").show();
+            document.getElementById('determinatieTabel').scrollIntoView();
+        });
+
+        $('.glyphicon').click(function(e) {
+            var klimatogramId = e.currentTarget.id.substr(2, 3);
+
+            //console.log(klimatogramId);
+
+            selectedKlimatogram = klimatogramId;
+
+            $.ajax({
+                url: 'UpdateKlimatogram',
+                contentType: 'application/html; charset=utf-8',
+                type: 'GET',
+                data: { klimatogramId: selectedKlimatogram },
+                dataType: 'html'
+            }).success(function(result) {
+                $('#klimatogramChart').html(result);
+
+                redraw();
+
+                $('.glyphicon#kl' + klimatogramId).css("color", "red");
+                $('.glyphicon#kl' + klimatogramId).css("color", "red");
+            });
+        });
+
+        var loaded = false;
+
+        $("#btnValideer").click(function(e) {
+            jqSimpleConnect.repaintAll();
+
+            if (!isAllConnected()) {
+                $("#messageDerdeGraad").show();
+                $("#messageDerdeGraad").html("Woeps, er ging iets mis. Alle klimatogrammen moeten eerst verbonden zijn met een locatie.");
+                return;
+            }
+            var aantalJuist = 0;
+
+            for (var i = 0; i < connections.length; ++i) {
+                if (connections[i] == i) {
+                    aantalJuist++;
+                    continue;
+                }
+                $(".pulse#dot" + connections[i]).css("border-color", "red");
+                connections[i] = -1;
+            }
+            redraw();
+
+            if (aantalJuist >= 6) { // Alles juist van connecties
+                $('.form-control').show();
+                $(".inputHidden").attr("style", "");
+                $('.glyphicon.glyphicon-question-sign').show();
+
+                redraw();
+
+                var inputs = new Array(6);
+
+                $("input").each(function(x) {
+                    if (this.id.indexOf("veg") != -1) {
+                        var inputId = this.id.substr(3, 4);
+
+                        inputs[inputId] = this.value;
+                    }
+                });
+                $.ajax({
+                    url: '/DerdeGraad/ControleerVegetatieTypes',
+                    data: { antwoorden: inputs },
+                    traditional: true,
+                    success: function(result) {
+                        $("#messageDerdeGraad").hide();
+
+                        var aantalJuist = 0;
+
+                        for (var i = 0; i < result.length; ++i) {
+                            var element = $("#veg" + i);
+
+                            element.parent().removeClass("has-error has-success");
+                            if (loaded) {
+                                if (!result[i]) {
+                                    element.parent().addClass("has-error");
+                                } else {
+                                    element.parent().addClass("has-success");
+                                    element.attr("disabled", "true");
+
+                                    aantalJuist++;
+                                }
+                            }
+                        }
+                        if (aantalJuist >= 6) { // Alle vegetatietypes juist
+                            // TODO: Alles juist, toon fotos op kaart
+                            $(".leegruimte").hide();
+                            $(".foto").show();
+                            $(".fotoHidden").attr("style", "");
+                            $("#messageDerdeGraad").hide();
+                            $("#endButtons").show();
+                            $("#btnValideer").hide();
+                            redraw();
+                        } else {
+                            if (loaded) {
+                                $("#messageDerdeGraad").show();
+                                $("#messageDerdeGraad").html("Er zijn nog enkele foutjes, controleer de rode velden en probeer nog een keer opnieuw.");
+                            }
+                            loaded = true;
+                        }
+                    }
+                });
+            } else {
+                $("#messageDerdeGraad").show();
+                $("#messageDerdeGraad").html("Je hebt " + aantalJuist + "/6 klimatogrammen juist kunnen linken met hun overeenkomstige locatie. De fouten zijn aangeduid, probeer nog een keertje opnieuw.");
+            }
+        });
+    });
+
+    function redraw() {
+        jqSimpleConnect.removeAll();
+
+        for (var i = 0; i < connections.length; ++i) {
+            if (isConnected(i)) {
+                jqSimpleConnect.connect("#kl" + i, "#dot" + connections[i], { radius: 2, color: colors[i % 3], roundedCorners: true, anchorA: 'horizontal', anchorB: 'horizontal' });
+                $(".pulse#dot" + connections[i]).css("border-color", "green");
+            }
+        }
+        for (var i = 0; i < connections.length; ++i) {
+            if (!isConnected(i)) {
+                $(".glyphicon#kl" + i).css("color", "black");
+            } else {
+                $(".glyphicon#kl" + i).css("color", "green");
+            }
+        }
+    }
+
+    function connect(klimatogram, punt) {
+        for (var i = 0; i < connections.length; ++i) {
+            if (connections[i] == punt) {
+                connections[i] = -1;
+            }
+            $(".pulse#dot" + i).css("border-color", "yellow");
+        }
+        connections[klimatogram] = punt;
+    }
+
+    function isConnected(klimatogram) {
+        return connections[klimatogram] != -1;
+    }
+
+    function isAllConnected() {
+        for (var i = 0; i < connections.length; ++i) {
+            if (!isConnected(i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+</script>

@@ -1,0 +1,71 @@
+﻿@model Geo4Students.ViewModels.KlimatogramViewModel
+
+
+<script type="text/javascript" src="/Scripts/ammap/ammap.js"></script>
+<script type="text/javascript" src="/Scripts/ammap/worldLow.js"></script>
+
+<script src="/Scripts/jquery-1.10.2.js"></script>
+
+<link href="@Url.Content("/Scripts/Style/Map.css")" rel="stylesheet" type="text/css"/>
+
+@{
+    ViewBag.Title = "Oef Graad 1";
+}
+
+<div class="mainContent col-md-12">
+    <h2 align="center" class="styledTitle">
+        Oefening <b>1<sup>ste</sup></b> Graad
+    </h2>
+    <div class="col-md-8 col-md-offset-2">
+        <hr/>
+    </div>
+    <div class="col-md-12">
+        <p>
+            <i class="fa fa-file-text-o fa-4x greenIcon pull-left"></i>
+            <b>Opdracht:</b> Start met het kiezen van een <b>klimatogram</b>. Vervolgens verschijnen er <b>vragen</b> die je aan de hand van het
+            klimatogram kan oplossen. Nadat alle vragen correct zijn beantwoord doorloop je de <b>determinatietabel</b> om het juiste klimaattype te
+            determineren, gebruik hierbij het klimatogram en jouw opgeloste vragen.
+        </p>
+    </div>
+</div>
+
+<div class="mainContent col-md-12">
+    <div class="col-md-12">
+        <h2 class="text-center">Klimatogram</h2>
+        <div class="col-md-8 col-md-offset-2">
+            <hr/>
+        </div>
+
+        @Html.Partial("../Klimatogram/_OpvragenKlimatogram", Model)
+
+        <br/>
+    </div>
+</div>
+
+<div id="klimatogramVragen"></div>
+
+<div id="oefeningTabelGraad1"></div>
+
+<div id="goedeAntwoordGraad1"></div>
+
+<script type="text/javascript">
+    var globalKlimatogramId;
+    var graadOefening = 1;
+
+    function onShowKlimatogram() {
+        var klimatogramId = $("#KlimatogramChart").children("div").attr("id").split('_')[1];
+        globalKlimatogramId = klimatogramId;
+
+        $("#klimatogramDropDowns").hide();
+
+        $.ajax({
+            url: 'ShowKlimatogramVragen',
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            data: { klimatogramId: klimatogramId },
+            dataType: 'html'
+        }).success(function(result) {
+            $('#klimatogramVragen').html(result);
+        });
+    }
+</script>

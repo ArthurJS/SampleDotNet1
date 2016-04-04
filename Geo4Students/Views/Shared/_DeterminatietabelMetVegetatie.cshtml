@@ -1,0 +1,114 @@
+﻿@using Geo4Students.Models.Domain.Determinatietabellen
+@model Geo4Students.ViewModels.DeterminatieViewModel
+
+<link rel="stylesheet" href="/Content/joint.css"/>
+<script src="/Scripts/joint.js"></script>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+<link rel="stylesheet" href="/Content/joint.css"/>
+
+<div id="determinatieTabel" class="content"></div>
+
+<script type="text/javascript">
+    var graph = new joint.dia.Graph;
+    var paper = new joint.dia.Paper({
+        el: $("#determinatieTabel"),
+        model: graph,
+        width: (@Model.BerekenMaxX(Model.Determinatietabel.Component, 0) + 1) * 250,
+        height: @Model.GeefResultaten().Count * 65,
+        interactive: false,
+        gridSize: 1
+    });
+    var selectable = true;
+
+    @{
+        var viewmodels = Model.ComponentViewModels;
+    }
+
+    @foreach (var cvm in viewmodels)
+    {
+        var width = cvm.DeterminatieComponent is DeterminatieResultaat ? 450 : 100;
+        var parent = cvm.DeterminatieComponent.Parent != null ? cvm.DeterminatieComponent.Parent.ComponentId : 0;
+        var text = "";
+        if (cvm.DeterminatieComponent is DeterminatieResultaat)
+        {
+            var temp = (DeterminatieResultaat) cvm.DeterminatieComponent;
+            text += temp.KlimaatKenmerk + " en " + temp.VegetatieKenmerk;
+        }
+        else
+        {
+            text = cvm.DeterminatieComponent.ToString();
+        }
+
+        <text> 
+    graph.addCell(new joint.shapes.basic.Rect({
+        id: "@cvm.DeterminatieComponent.ComponentId",
+        position: { x: "@cvm.X", y: "@cvm.Y" },
+        size: { width: "@width", height: 30 },
+        interactive: false,
+        attrs: { rect: { fill: '#8EBBEB' }, text: { text: "@Html.Raw(text)", fill: 'white', 'font-size': 10 } },
+        parentId: "@parent",
+        selected: false
+    }));
+    </text>
+        if (cvm.DeterminatieComponent.Parent != null)
+        {
+            var ouder = cvm.DeterminatieComponent.Parent as DeterminatieVoorwaarde;
+            var labelText = ouder.Yes == cvm.DeterminatieComponent ? "Ja" : "Nee";
+            <text>
+    graph.addCell(new joint.dia.Link({
+        source: { id: "@cvm.DeterminatieComponent.ComponentId" },
+        target: { id: "@cvm.DeterminatieComponent.Parent.ComponentId" },
+        interactive: false,
+        labels: [{ position: -10, attrs: { text: { text: '@labelText' } } }],
+        attrs: {
+            '.connection': { stroke: 'black', 'stroke-width': 1 },
+            '.marker-source': { stroke: 'black', fill: 'black', d: 'M 10 0 L 0 5 L 10 10 z' }
+        },
+        </text>
+            if (cvm.DeterminatieComponent is DeterminatieResultaat && ouder.No == cvm.DeterminatieComponent)
+            {
+                <text>
+        vertices: [{ x: @cvm.Parent.X + 50, y: @cvm.Y + 15}],
+        </text>
+            }
+            <text>
+    }));
+    </text>
+        }
+    }
+
+    paper.on("cell:pointerclick", function(cellView, evt, x, y) {
+        if (cellView.model.get("parentId") !== undefined && selectable == true) {
+            resetBackgrounds();
+            cellView.model.attr({
+                rect: { fill: "#71BBBC" }
+            });
+            var element = cellView.model;
+            while (element !== undefined) {
+                element.set("selected", true);
+                element.attr({
+                    rect: { fill: "#71BBBC" }
+                });
+                element = graph.getCell(element.get("parentId"));
+            }
+        }
+    });
+
+    function resetBackgrounds() {
+        @foreach (var cvm in viewmodels)
+        {
+            <text>
+
+        var element = graph.getCell(@cvm.DeterminatieComponent.ComponentId);
+        element.attr({
+            rect: { fill: "#8EBBEB" }
+        });
+        element.set("selected", false);
+        </text>
+        }
+    }
+
+    function validate() {
+    }
+</script>

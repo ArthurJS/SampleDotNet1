@@ -1,0 +1,13 @@
+﻿@model Geo4Students.ViewModels.KlimatogramViewModel
+
+@using (Ajax.BeginForm("SelectContinent", "Klimatogram", new AjaxOptions {HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "LandenDropDown"}))
+{
+    @Html.Label("Stap 1: Kies een werelddeel")
+    @Html.DropDownListFor(m => m.SelectedContinentId, Model.Continenten, "<kies een werelddeel>", new {@class = "form-control"})
+}
+
+<script type="text/javascript">
+    $("#SelectedContinentId").change(function() {
+        $(this).parents("form").submit();
+    });
+</script>

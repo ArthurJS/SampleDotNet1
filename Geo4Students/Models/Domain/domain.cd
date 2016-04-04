@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Geo4Students.Models.Domain.Klimatogrammen.Continent">
+    <Position X="0.5" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAABABAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Domain\Klimatogrammen\Continent.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Landen" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Geo4Students.Models.Domain.Klimatogrammen.Klimatogram">
+    <Position X="4.75" Y="3.25" Width="7" />
+    <AssociationLine Name="Metingen" Type="Geo4Students.Models.Domain.Klimatogrammen.Meting">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-2.19" Y="0.073" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>gAQCAAAAQpAAAAAAACAABBAAgAAhAAFAAAAAAAAgYQA=</HashCode>
+      <FileName>Models\Domain\Klimatogrammen\Klimatogram.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Metingen" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Geo4Students.Models.Domain.Klimatogrammen.Land">
+    <Position X="4.75" Y="0.75" Width="2" />
+    <AssociationLine Name="Klimatogrammen" Type="Geo4Students.Models.Domain.Klimatogrammen.Klimatogram">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-2.559" Y="0.099" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAABABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Domain\Klimatogrammen\Land.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Klimatogrammen" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Geo4Students.Models.Domain.Klimatogrammen.Meting">
+    <Position X="7.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAEAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Domain\Klimatogrammen\Meting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Geo4Students.Models.Domain.Determinatietabellen.DeterminatieComponent">
+    <Position X="0.5" Y="10.25" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAQAAAAAAAQAAAAAAACAAAAAA=</HashCode>
+      <FileName>Models\Domain\Determinatietabellen\DeterminatieComponent.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Parent" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Geo4Students.Models.Domain.Determinatietabellen.DeterminatieResultaat">
+    <Position X="0.5" Y="12.25" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAEAAAAAAAAAAAAQAAAAAAAABAAAAA=</HashCode>
+      <FileName>Models\Domain\Determinatietabellen\DeterminatieResultaat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Geo4Students.Models.Domain.Determinatietabellen.DeterminatieVoorwaarde">
+    <Position X="5" Y="10.25" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAEAAAAAAAAACAAQAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Models\Domain\Determinatietabellen\DeterminatieVoorwaarde.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Voorwaarde" />
+      <Property Name="Yes" />
+      <Property Name="No" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Geo4Students.Models.Domain.Determinatietabellen.Voorwaarde">
+    <Position X="10.25" Y="10.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AoAAAAAAAAAAAAAkIAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Models\Domain\Determinatietabellen\Voorwaarde.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Geo4Students.Models.Domain.Determinatietabellen.Determinatietabel">
+    <Position X="5" Y="12.25" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAABAAAAAAAQAAAAABAAAAAAAA=</HashCode>
+      <FileName>Models\Domain\Determinatietabellen\Determinatietabel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Component" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Geo4Students.Models.Domain.Determinatietabellen.Parameters.Tk">
+    <Position X="10.75" Y="21.5" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAQAAAAgAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Models\Domain\Determinatietabellen\Parameters\Tk.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Geo4Students.Models.Domain.Determinatietabellen.Parameters.Nz">
+    <Position X="1.25" Y="19" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAQAAAAgAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Models\Domain\Determinatietabellen\Parameters\Nz.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Geo4Students.Models.Domain.Determinatietabellen.Parameters.Nw">
+    <Position X="1.25" Y="21.5" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAQAAAAgAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Models\Domain\Determinatietabellen\Parameters\Nw.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Geo4Students.Models.Domain.Determinatietabellen.Parameters.Mw">
+    <Position X="6.25" Y="24" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAQAAAAgAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Models\Domain\Determinatietabellen\Parameters\Mw.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Geo4Students.Models.Domain.Determinatietabellen.Parameters.Mk">
+    <Position X="6" Y="21.5" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAQAAAAgAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Models\Domain\Determinatietabellen\Parameters\Mk.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Geo4Students.Models.Domain.Determinatietabellen.Parameters.Tw">
+    <Position X="10.75" Y="19" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAQAAAAgAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Models\Domain\Determinatietabellen\Parameters\Tw.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Geo4Students.Models.Domain.Determinatietabellen.Parameters.D">
+    <Position X="1.25" Y="24" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAQAAAAgAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Models\Domain\Determinatietabellen\Parameters\D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Geo4Students.Models.Domain.Determinatietabellen.Parameters.Parameter">
+    <Position X="6.25" Y="18.5" Width="4" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAQAIAAgAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Models\Domain\Determinatietabellen\Parameters\Parameter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Geo4Students.Models.Domain.Determinatietabellen.OperatorFactory">
+    <Position X="11" Y="25.5" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Domain\Determinatietabellen\OperatorFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Geo4Students.Models.Domain.Determinatietabellen.ParameterFactory">
+    <Position X="11" Y="23.75" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Domain\Determinatietabellen\ParameterFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Geo4Students.Models.Domain.Jaar">
+    <Position X="9.75" Y="13.75" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAAAAAAAAAAAAAAAAQAAAAAAAAAAIA=</HashCode>
+      <FileName>Models\Domain\Jaar.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Determinatietabel" />
+    </ShowAsAssociation>
+  </Class>
+  <Enum Name="Geo4Students.Models.Domain.Klimatogrammen.Maand">
+    <Position X="1.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAQAAAAJAABAAAQAAAEAAAQAAAAAIAAAAAEAAA=</HashCode>
+      <FileName>Models\Domain\Klimatogrammen\Maand.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Geo4Students.Models.Domain.Determinatietabellen.Operator">
+    <Position X="14.75" Y="23.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAgAAAAAEAAAAAAAAAAAAAAgAAAAABAAA=</HashCode>
+      <FileName>Models\Domain\Determinatietabellen\Operator.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,217 @@
+﻿@using Geo4Students.Models.Domain.Determinatietabellen
+@using Geo4Students.ViewModels
+@model OefeningDeterminatieViewModel
+
+@{
+    ViewBag.Title = "Index";
+    var detVM = new DeterminatieViewModel(Model.Determinatietabel);
+    var mapUrl = "https://maps.googleapis.com/maps/api/staticmap?center=" + Model.Klimatogram.X.ToString().Replace(",", ".") + "," + Model.Klimatogram.Y.ToString().Replace(",", ".") + "&zoom=1&size=1000x1000&maptype=satellite&markers=" + Model.Klimatogram.X.ToString().Replace(",", ".") + "," + Model.Klimatogram.Y.ToString().Replace(",", ".") + "&size=mid%7color:blue%7";
+}
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/slideMainContentDivOnClick.js"></script>
+
+<div class="mainContent col-md-12">
+    <div class="text-center">
+        <h2>Oefening: Determineer het klimaat- en vegetatietype</h2>
+        <div class="col-md-8 col-md-offset-2">
+            <hr/>
+        </div>
+        <div class="col-md-12">
+            <p>
+                Dit is een oefening en hier komt text en uitleg en shit, lalalalalalala. Doorloop de determinatietabel en klik dan op het
+                vakje waarin het juiste klimaattype staat. Klik dan op de knop om te kijken of je antwoord juist is. Indien het niet juist is
+                krijg je te zien waar je fout bent gegaan: een groen vakje ligt op de goede weg maar een rood vakje niet.
+            </p>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new {id = "determinatieValidate"}))
+{
+    <div class="mainContent col-md-12">
+        <i class="toggleButton fa fa-caret-square-o-up fa-2x extremeHover orangeIcon"></i>
+        <div class="text-center">
+            <div id="klimatogramChart" class="col-md-10 col-md-offset-1">
+                <h2>Klimatogram</h2>
+                <div class="content">
+                    <div class="col-md-8 col-md-offset-2">
+                        <hr/>
+                    </div>
+                    <div class="col-md-10 col-md-offset-1">
+                        @Html.Partial("_Klimatogram", new KlimatogramViewModel
+                        {
+                            Klimatogram = Model.Klimatogram
+                        });
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mainContent col-md-12 text-center">
+        <i class="toggleButton fa fa-caret-square-o-up fa-2x extremeHover orangeIcon"></i>
+        <div class="col-md-8 col-md-offset-2">
+            <h2>Determinatietabel</h2>
+        </div>
+        <div class="content">
+            <div class="col-md-8 col-md-offset-2">
+                <hr/>
+            </div>
+            <div class="col-md-12">
+                @Html.Partial("_Determinatietabel", detVM)
+                <div id="messageDet" class="alert col-md-8 col-md-offset-2" css="display:none"></div>
+                <div id="submitDeterminatie" class="col-md-12">
+                    <input type="submit" class="btn btn-inverse btn-large" value="Bevestig" id="bevestigDeterminatie"/>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="mainContent col-md-12" id="vegetatie" style="display: none">
+    <div class="text-center">
+        <div class="col-md-8 col-md-offset-2">
+            <h2>Vegetatietype</h2>
+            <div class="col-md-8 col-md-offset-2">
+                <hr/>
+            </div>
+            <div class="col-md-12">
+                @if (Model.Jaar == 3)
+                {
+                    @Html.Partial("_VegetatieSelectieDerdeJaar", new VegetatieViewModel
+                    {
+                        DeterminatieResultaat = Model.JuisteResultaat(),
+                        Resultaten = detVM.GeefResultaten().Select(e => e).ToList()
+                    })
+                    ;
+                }
+                else
+                {
+                    {
+                        @Html.Partial("_VegetatieSelectieVierdeJaar", new VegetatieViewModel
+                        {
+                            DeterminatieResultaat = Model.JuisteResultaat(),
+                            Resultaten = detVM.GeefResultaten().Select(e => e).ToList()
+                        })
+                        ;
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mainContent row" id="proficiat" style="display: none">
+    <div class="text-center">
+        <div class="col-md-8 col-md-offset-2">
+            <h2>Proficiat, je hebt het goede antwoord gevonden!</h2>
+            <hr/>
+        </div>
+        <div class="col-md-12">
+            <img src="@mapUrl" alt="Kaart met de locatie van het klimatogram" class="img-responsive" id="googleMap"/>
+        </div>
+    </div>
+</div>
+<script>
+    @{
+        var results = detVM.GeefResultaten();
+    }
+
+    $ = jQuery;
+
+    $(document).ready(function() {
+        $("#determinatieValidate").submit(function(e) {
+            e.preventDefault();
+            var elements = graph.getElements();
+            var resultSelected = -1;
+            @foreach (var component in results)
+            {
+                <text>
+            var id = @component.ComponentId;
+            for (var i = 0; i < elements.length; i++) {
+                if(elements[i].id == id && elements[i].get("selected") == true){
+                    resultSelected = elements[i].id;
+                };
+            };
+            </text>
+            }
+            if (resultSelected === -1) {
+                $("#messageDet").show();
+                $("#messageDet").html("Woeps, je selecteerde nog geen klimaattype.");
+            } else {
+                var juisteId = @Model.JuisteResultaat().ComponentId;
+                if (resultSelected == juisteId) {
+                    resetBackgrounds();
+                    var cell = graph.getCell(juisteId);
+                    while (cell !== undefined) {
+                        cell.attr({
+                            rect: { fill: "#008000" }
+                        });
+                        cell = graph.getCell(cell.get("parentId"));
+                    }
+                    selectable = false;
+                    $("#bevestigDeterminatie").hide();
+                    $("#messageDet").hide();
+                    if (@Model.Jaar > 2) {
+                        $("#vegetatie").show();
+
+                    } else {
+                        $("#proficiat").show();
+                    }
+                } else {
+                    var fout;
+                    @{
+                        DeterminatieComponent huidige = Model.JuisteResultaat();
+                    }
+                    $("#messageDet").show();
+                    $("#messageDet").html("Helaas, het gekozen klimaattype is niet goed. Probeer nog eens opnieuw.");
+                    var parent = @huidige.Parent.ComponentId;
+                    var foutGevonden = false;
+                    @while (huidige.Parent != null)
+                    {
+                        <text>
+                    parent = @huidige.Parent.ComponentId;
+                    var huidigeCell = graph.getCell(resultSelected);
+                    while(huidigeCell.get("parentId") !== "0"){
+                        if(huidigeCell.get("parentId") == parent && foutGevonden != true){
+                            fout = huidigeCell;
+                            foutGevonden = true;
+                        }
+                        huidigeCell = graph.getCell(huidigeCell.get("parentId"));
+                    }
+                    @{
+                        huidige = huidige.Parent;
+                    }
+                    </text>
+                    }
+                    resetBackgrounds();
+                    fout.attr({
+                        rect: { fill: "#D80000" }
+                    });
+                    while (fout.get("parentId") !== undefined) {
+                        fout = graph.getCell(fout.get("parentId"));
+                        fout.attr({
+                            rect: { fill: "#008000" }
+                        });
+                    }
+                }
+            }
+        });
+    });
+
+    function initialize() {
+        var myLatlng = new google.maps.LatLng(-25.363882, 131.044922);
+        var mapOptions = {
+            zoom: 4,
+            center: myLatlng
+        };
+        var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+        var marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map,
+            title: 'Hello World!'
+        });
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>

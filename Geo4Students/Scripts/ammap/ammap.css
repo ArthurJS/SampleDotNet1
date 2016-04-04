@@ -1,0 +1,63 @@
+.ammapAlert {
+    color: #CC0000;
+    display: table-cell;
+    font-family: verdana, helvetica, arial, sans-serif;
+    font-size: 12px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.ammapDescriptionWindow {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    background-color: #FFFFFF;
+    border-color: #DADADA;
+    border-style: solid;
+    border-width: 1px;
+    box-sizing: border-box;
+    color: #000000;
+    font-family: verdana, helvetica, arial, sans-serif;
+    font-size: 11px;
+    padding: 8px;
+}
+
+.ammapDescriptionTitle {
+    font-family: verdana, helvetica, arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+
+.ammapDescriptionWindowCloseButton { }
+
+.ammapObjectList ul {
+    color: #999999;
+    font-family: verdana, helvetica, arial, sans-serif;
+    font-size: 12px;
+    list-style: square outside;
+    padding-left: 20px;
+}
+
+.ammapObjectList ul ul { padding-left: 14px; }
+
+.ammapObjectList a { color: #000000; }
+
+.ammapObjectList a {
+    color: #000000;
+    display: block;
+    padding: 2px;
+    text-decoration: none;
+}
+
+.ammapObjectList a:hover {
+    background: #FFFFFF;
+    color: #CC0000;
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+}
+
+.ammapDescriptionText { overflow: auto; }
+
+
+.amChartsPlotArea { }

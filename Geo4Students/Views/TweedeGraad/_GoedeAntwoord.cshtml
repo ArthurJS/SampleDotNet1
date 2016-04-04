@@ -1,0 +1,55 @@
+﻿@using Geo4Students.ViewModels
+@model OefeningDeterminatieViewModel
+
+<div class="mainContent col-md-12" id="proficiat">
+    <div class="text-center">
+        <div class="col-md-8 col-md-offset-2">
+            <h2>Proficiat, je hebt het goede antwoord gevonden!</h2>
+            <hr/>
+            <div class="col-md-6">
+                <button id="nogIs" class="btn">Nog een oefening maken</button>
+            </div>
+            <div class="col-md-6">
+                <button id="start" class="btn">Terug naar de startpagina</button>
+            </div>
+        </div>
+        <div class="col-md-12 zakken" id="fotoVegetatie" style="display: none">
+            @Html.Partial("_Vegetatie", new VegetatieViewModel
+            {
+                DeterminatieResultaat = Model.JuisteResultaat()
+            })
+        </div>
+        @Html.Partial("_Map", new KlimatogramViewModel {Klimatogram = Model.Klimatogram})
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        if (graadOefening === 1) {
+            $("#fotoVegetatie").show();
+        }
+        $("#nogIs").click(function (e) {
+            e.preventDefault();
+            if (graadOefening === 1) {
+                location.href = '../EersteGraad/Index';
+            } else {
+                location.href = '../TweedeGraad/Index';
+            }
+        });
+
+        $("#start").click(function (e) {
+            e.preventDefault();
+            location.href = '../Home/Start';
+        });
+
+        $.ajax({
+            url: '../TweedeGraad/UpdateKlimatogram',
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            data: { klimatogramId: '@Model.Klimatogram.KlimatogramId' },
+            dataType: 'html'
+        }).success(function (result) {
+            $('#klimatogramChart').html(result);
+        });
+    })
+</script>
